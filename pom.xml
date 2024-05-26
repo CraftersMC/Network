@@ -7,7 +7,7 @@
     <groupId>com.nukkitx.network</groupId>
     <artifactId>network-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.6.28-SNAPSHOT</version>
+    <version>1.6.28-irrl</version>
     <inceptionYear>2018</inceptionYear>
     <url>https://github.com/NukkitX/Network</url>
 
@@ -23,7 +23,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>HHmm-ddMMyyyy</maven.build.timestamp.format>
-        <netty.version>4.1.85.Final</netty.version>
+        <netty.version>4.1.94.Final</netty.version>
         <junit.version>5.4.2</junit.version>
     </properties>
 
