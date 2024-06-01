@@ -18,6 +18,17 @@
         <module>rcon</module>
     </modules>
 
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <url>https://repo.teon.llc/repository/maven/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus</id>
+            <url>https://repo.teon.llc/repository/maven/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -26,30 +37,6 @@
         <netty.version>4.1.94.Final</netty.version>
         <junit.version>5.4.2</junit.version>
     </properties>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/NukkitX/Network/issues</url>
-    </issueManagement>
-
-    <ciManagement>
-        <system>Jenkins</system>
-        <url>https://ci.nukkitx.com/job/Network/</url>
-    </ciManagement>
-
-    <scm>
-        <connection>scm:git:https://github.com/NukkitX/Network.git</connection>
-        <developerConnection>scm:git:ssh://github.com:NukkitX/Network.git</developerConnection>
-        <url>https://github.com/NukkitX/Network</url>
-    </scm>
 
     <repositories>
         <repository>
