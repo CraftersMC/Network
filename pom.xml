@@ -9,7 +9,6 @@
     <packaging>pom</packaging>
     <version>1.6.28-irrl</version>
     <inceptionYear>2018</inceptionYear>
-    <url>https://github.com/NukkitX/Network</url>
 
     <modules>
         <module>common</module>
@@ -20,12 +19,12 @@
 
     <distributionManagement>
         <repository>
-            <id>nexus</id>
-            <url>https://repo.teon.llc/repository/maven/</url>
+            <id>teon-releases</id>
+            <url>https://repo.teon.llc/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
-            <id>nexus</id>
-            <url>https://repo.teon.llc/repository/maven/</url>
+            <id>teon-snapshots</id>
+            <url>https://repo.teon.llc/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
