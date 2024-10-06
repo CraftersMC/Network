@@ -56,11 +56,11 @@ public final class EventLoops {
     @RequiredArgsConstructor
     public enum ChannelType {
         EPOLL(EpollDatagramChannel.class, EpollSocketChannel.class, EpollServerSocketChannel.class,
-                (threads, factory) -> new EpollEventLoopGroup(threads, factory), Epoll.isAvailable()),
-        KQUEUE(KQueueDatagramChannel.class, KQueueSocketChannel.class, KQueueServerSocketChannel.class,
-                (threads, factory) -> new KQueueEventLoopGroup(threads, factory), KQueue.isAvailable()),
+            EpollEventLoopGroup::new, Epoll.isAvailable()),
+        KQUEUE(KQueueDatagramChannel.class, KQueueSocketChannel.class,
+            KQueueServerSocketChannel.class, KQueueEventLoopGroup::new, KQueue.isAvailable()),
         NIO(NioDatagramChannel.class, NioSocketChannel.class, NioServerSocketChannel.class,
-                (threads, factory) -> new NioEventLoopGroup(threads, factory), true);
+            NioEventLoopGroup::new, true);
 
         private final Class<? extends DatagramChannel> datagramChannel;
         private final Class<? extends SocketChannel> socketChannel;
