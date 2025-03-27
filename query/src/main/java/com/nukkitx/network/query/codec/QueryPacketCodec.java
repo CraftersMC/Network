@@ -9,9 +9,9 @@ import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.handler.codec.MessageToMessageCodec;
-
 import java.util.Arrays;
 import java.util.List;
+import lombok.Cleanup;
 
 public class QueryPacketCodec extends MessageToMessageCodec<DatagramPacket, DirectAddressedQueryPacket> {
     private static final byte[] QUERY_SIGNATURE = new byte[]{(byte) 0xFE, (byte) 0xFD};
@@ -21,10 +21,10 @@ public class QueryPacketCodec extends MessageToMessageCodec<DatagramPacket, Dire
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, DirectAddressedQueryPacket packet, List<Object> list) throws Exception {
         try {
-            ByteBuf buf = ByteBufAllocator.DEFAULT.ioBuffer();
+            @Cleanup("release") ByteBuf buf = ByteBufAllocator.DEFAULT.ioBuffer();
             buf.writeByte(packet.content().getId() & 0xFF);
             packet.content().encode(buf);
-            list.add(new DatagramPacket(buf, packet.recipient(), packet.sender()));
+            list.add(new DatagramPacket(buf.retain(), packet.recipient(), packet.sender()));
         } finally {
             packet.release();
         }
