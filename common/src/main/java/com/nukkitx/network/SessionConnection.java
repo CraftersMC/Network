@@ -1,7 +1,6 @@
 package com.nukkitx.network;
 
 import com.nukkitx.network.util.DisconnectReason;
-
 import java.net.InetSocketAddress;
 
 public interface SessionConnection<T> {
@@ -21,8 +20,6 @@ public interface SessionConnection<T> {
     void disconnect(DisconnectReason reason);
 
     void send(T packet);
-
-    void sendImmediate(T packet);
 
     boolean isClosed();
 
