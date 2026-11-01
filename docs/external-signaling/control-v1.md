@@ -7,8 +7,9 @@ ordinary operations.
 
 ## Discovery and authentication
 
-The noncritical `dev.opencollab.nxs.websocket` discovery extension, `version: 1`
-with empty `data`, advertises the endpoint. It is `/v1/nxs/control` on the
+The noncritical `dev.opencollab.nxs.websocket` discovery extension, `version: 1`,
+advertises the endpoint. Its `data` is empty unless the provider supports
+[authenticating in the first frame](#authenticating-in-the-first-frame). It is `/v1/nxs/control` on the
 provider origin with scheme `wss`, and subprotocol `nethernet-external-signaling-v1`.
 Loopback development may use WS. Apply the
 [canonical origin](wire-reference.md#canonical-origins) rules and normal TLS
@@ -21,10 +22,36 @@ upgrade carries the last sequence the host used and does not consume one. A host
 whose profile declares `assistedFamilies` also sends `nxs-assisted: 1`, a routing
 hint for the provider that grants nothing by itself.
 
+### Authenticating in the first frame
+
+Some hosts, such as web browsers, cannot set headers on a WebSocket upgrade. A
+provider that accepts them sets `frameAuthentication: true` in the extension's
+`data`. Only then may a host authenticate this way:
+
+1. Open `/v1/nxs/control?instance=<instanceId>` with the subprotocol and no NXS
+   headers. The query is exactly that single parameter. The instance ID is not
+   secret; it lets the provider route the socket before it is authenticated.
+2. Send one text frame `{"kind":"authenticate","headers":{...}}`. `headers` holds
+   the NXS request headers the upgrade would carry, signed for `GET`, that exact
+   path and query, and an empty body. `nxs-instance-id` matches the query. This
+   path needs no `nxs-assisted` hint.
+3. The provider answers with a `response` frame whose `id` is the frame's
+   idempotency key. Status 200 means the socket is authenticated, exactly like a
+   header-authenticated upgrade. Any other status carries the operation error body,
+   and the provider closes the socket with 1008.
+
+Before that response the host sends only `ping`. The provider closes the socket
+with 1008 on any other frame, on an invalid authenticate frame, or when no
+authenticate frame succeeds within 10 seconds. A failed attempt does not affect a
+socket already authenticated for the instance. Providers should limit these
+upgrades per source address, since they are unauthenticated until the first frame.
+
 ## Frames
 
 Every JSON frame is an object with a `kind`. The host sends `operation` and
-`assisted-join-result`; the provider sends `response` and `assisted-join`. A frame
+`assisted-join-result`, and `authenticate` when it
+[authenticates in the first frame](#authenticating-in-the-first-frame); the
+provider sends `response` and `assisted-join`. A frame
 without `kind`, or with a known `kind` and an invalid shape, closes the socket with
 code 1008. Receivers ignore frames of an unknown `kind` and members they do not
 recognize. The [schema](nxs-v1.schema.json) defines each kind under `$defs`. The

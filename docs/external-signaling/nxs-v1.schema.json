@@ -1215,6 +1215,27 @@
         }
       }
     },
+    "websocketAuthenticate": {
+      "type": "object",
+      "required": [
+        "kind",
+        "headers"
+      ],
+      "properties": {
+        "kind": {
+          "const": "authenticate"
+        },
+        "headers": {
+          "type": "object",
+          "maxProperties": 32,
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 1024
+          }
+        }
+      },
+      "description": "Host to provider, first frame only, when discovery advertises frameAuthentication. headers carries the signed NXS upgrade headers."
+    },
     "websocketOperation": {
       "type": "object",
       "required": [
